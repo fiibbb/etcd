@@ -198,6 +198,7 @@ func StartEtcd(inCfg *Config) (e *Etcd, err error) {
 		LoggerWriteSyncer:          cfg.loggerWriteSyncer,
 		Debug:                      cfg.Debug,
 		ForceNewCluster:            cfg.ForceNewCluster,
+		GRPCAdditionalServerOptions:cfg.GRPCAdditionalServerOpts,
 	}
 	print(e.cfg.logger, *cfg, srvcfg, memberInitialized)
 	if e.Server, err = etcdserver.NewServer(srvcfg); err != nil {
@@ -723,6 +724,7 @@ func (e *Etcd) serveClients() (err error) {
 	}
 
 	gopts := []grpc.ServerOption{}
+	gopts = append(gopts, e.cfg.GRPCAdditionalServerOpts...)
 	if e.cfg.GRPCKeepAliveMinTime > time.Duration(0) {
 		gopts = append(gopts, grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
 			MinTime:             e.cfg.GRPCKeepAliveMinTime,

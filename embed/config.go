@@ -214,6 +214,8 @@ type Config struct {
 	// before closing a non-responsive connection. 0 to disable.
 	GRPCKeepAliveTimeout time.Duration `json:"grpc-keepalive-timeout"`
 
+	GRPCAdditionalServerOpts []*grpc.ServerOption
+
 	// PreVote is true to enable Raft Pre-Vote.
 	// If enabled, Raft runs an additional election phase
 	// to check whether it would get enough votes to win
